@@ -1,0 +1,101 @@
+/* StarBorder — botón principal con recorrido de luz de señalización */
+
+.star-border-container {
+  display: inline-block;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.star-border-container:hover {
+  transform: scale(1.035) translateY(-1px);
+}
+
+.star-border-container:active {
+  transform: scale(0.985) translateY(0);
+}
+
+.border-gradient-bottom {
+  position: absolute;
+  width: 300%;
+  height: 50%;
+  opacity: 0.7;
+  bottom: -12px;
+  right: -250%;
+  border-radius: 50%;
+  animation: star-movement-bottom linear infinite alternate;
+  animation-duration: inherit;
+  transition: animation-duration 200ms ease;
+  z-index: 0;
+}
+
+.border-gradient-top {
+  position: absolute;
+  opacity: 0.7;
+  width: 300%;
+  height: 50%;
+  top: -12px;
+  left: -250%;
+  border-radius: 50%;
+  animation: star-movement-top linear infinite alternate;
+  animation-duration: inherit;
+  transition: animation-duration 200ms ease;
+  z-index: 0;
+}
+
+.star-border-container:hover .border-gradient-bottom,
+.star-border-container:hover .border-gradient-top {
+  animation-duration: var(--star-speed-hover, 1.6s) !important;
+  opacity: 1;
+}
+
+.inner-content {
+  position: relative;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, oklch(0.26 0.075 256) 0%, var(--blueprint-deep) 100%);
+  color: var(--foreground);
+  font-family: var(--font-technical);
+  font-size: 0.875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 14px 26px;
+  border-radius: 4px;
+  z-index: 1;
+  box-shadow: var(--shadow-plate);
+  transition:
+    color 180ms ease,
+    background 180ms ease,
+    box-shadow 220ms ease;
+}
+
+.star-border-container:hover .inner-content {
+  color: var(--star-accent, var(--signal-yellow));
+  box-shadow:
+    var(--shadow-plate),
+    0 0 0 1px var(--star-accent, var(--signal-yellow));
+}
+
+@keyframes star-movement-bottom {
+  0% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-100%, 0%);
+    opacity: 0;
+  }
+}
+
+@keyframes star-movement-top {
+  0% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(100%, 0%);
+    opacity: 0;
+  }
+}

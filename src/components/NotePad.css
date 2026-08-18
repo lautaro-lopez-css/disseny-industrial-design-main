@@ -1,0 +1,113 @@
+/*
+ * NotePad — hoja de bloc de notas físico apoyada sobre la mesa de trabajo.
+ * Fondo crema con textura de papel, perforación superior y rotación aleatoria.
+ */
+
+.notepad {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  padding: 2.25rem 1.5rem 1.5rem;
+  border-radius: 2px;
+  color: #2a2a2a;
+  background-color: #f9f7f1;
+  background-image:
+    /* líneas de cuaderno sutiles */
+    repeating-linear-gradient(0deg, transparent, transparent 26px, rgba(68, 132, 192, 0.06) 27px),
+    /* manchas de fibra de papel */
+    radial-gradient(ellipse at 20% 20%, rgba(0, 0, 0, 0.015) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 70%, rgba(0, 0, 0, 0.015) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, rgba(139, 116, 85, 0.04) 0%, transparent 70%);
+  background-size:
+    100% 27px,
+    100% 100%,
+    100% 100%,
+    100% 100%;
+  box-shadow:
+    0 2px 0 0 rgba(255, 255, 255, 0.35) inset,
+    0 4px 14px rgba(0, 0, 0, 0.18),
+    0 10px 28px rgba(0, 0, 0, 0.12);
+  transform: rotate(var(--notepad-rotation, 0deg));
+  transform-origin: center center;
+  transition:
+    transform 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform, box-shadow;
+}
+
+.notepad:hover {
+  transform: rotate(0deg);
+  box-shadow:
+    0 2px 0 0 rgba(255, 255, 255, 0.35) inset,
+    0 8px 22px rgba(0, 0, 0, 0.22),
+    0 18px 44px rgba(0, 0, 0, 0.16);
+}
+
+/* Espiral / perforación superior */
+.notepad-binding {
+  position: absolute;
+  top: 6px;
+  left: 14px;
+  right: 14px;
+  height: 14px;
+  background-image: radial-gradient(circle at center, #3a3a3a 1.5px, transparent 2px);
+  background-size: 14px 14px;
+  background-repeat: repeat-x;
+  opacity: 0.45;
+}
+
+/* Línea de perforación */
+.notepad-perforation {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(180, 170, 150, 0.5),
+    rgba(180, 170, 150, 0.5) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+}
+
+.notepad-content {
+  position: relative;
+  z-index: 1;
+}
+
+.notepad-title {
+  font-family: var(--font-display), "Oswald", "Barlow Condensed", sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #1a2a3a;
+  margin-bottom: 0.75rem;
+}
+
+.notepad-text {
+  font-family: var(--font-sans), "Barlow", system-ui, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #3a3a3a;
+  white-space: pre-line;
+}
+
+.notepad-image {
+  margin: 0.75rem 0 1rem;
+  overflow: hidden;
+  border-radius: 1px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.notepad-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}

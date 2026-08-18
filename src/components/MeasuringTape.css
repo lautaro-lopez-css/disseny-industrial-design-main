@@ -1,0 +1,191 @@
+/* MeasuringTape — cinta métrica lateral: los números corren con el scroll */
+
+.measuring-tape {
+  --accent: #d7263d;
+  position: relative;
+  isolation: isolate;
+}
+
+.tape-window {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    black 28px,
+    black calc(100% - 28px),
+    transparent 100%
+  );
+}
+
+.tape-strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  will-change: transform;
+}
+
+.tape-mark {
+  position: absolute;
+  left: 6px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 16px;
+}
+
+.tape-mark__line {
+  display: block;
+  height: 1px;
+  width: 6px;
+  background: rgb(210 222 240 / 40%);
+}
+
+.tape-mark[data-major="true"] .tape-mark__line {
+  width: 11px;
+  background: rgb(210 222 240 / 65%);
+}
+
+.tape-mark__num {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.02em;
+  color: rgb(210 222 240 / 55%);
+  transform: translateY(-1px);
+}
+
+/* Línea lectora fija: como el punto de lectura de una cinta métrica real,
+   los números pasan por acá mientras vos te quedás quieto. */
+.tape-reader-line {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  top: 35%;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgb(215 38 61 / 70%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.tape-reader-line::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  width: 6px;
+  height: 8px;
+  background: var(--accent);
+  clip-path: polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%);
+}
+
+.tape-nav-list {
+  position: relative;
+  z-index: 6;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tape-nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 0;
+  padding: 2px 0;
+  cursor: pointer;
+  color: rgb(210 222 240 / 55%);
+  transition: color 220ms ease;
+}
+
+.tape-nav-item:hover,
+.tape-nav-item[data-active="true"] {
+  color: var(--accent);
+}
+
+.tape-nav-item__bar {
+  display: block;
+  height: 1px;
+  width: 14px;
+  background: currentColor;
+  transition:
+    width 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 220ms ease;
+}
+
+.tape-nav-item[data-active="true"] .tape-nav-item__bar {
+  width: 26px;
+}
+
+.tape-nav-item__num {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  opacity: 0.8;
+}
+
+.tape-nav-item__label {
+  position: absolute;
+  left: calc(100% + 10px);
+  white-space: nowrap;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease;
+  pointer-events: none;
+  color: #e8ecf2;
+  background: oklch(0.24 0.06 256 / 88%);
+  border: 1px solid oklch(0.45 0.03 256 / 60%);
+  padding: 3px 8px;
+}
+
+.tape-nav-item:hover .tape-nav-item__label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.tape-nav-item[data-active="true"] .tape-nav-item__label {
+  color: var(--accent);
+}
+
+/* Carcasa metálica de la cinta (se usa igual que antes: .ruler-rail) */
+.ruler-rail {
+  isolation: isolate;
+  background-color: oklch(0.42 0.014 250);
+  background-image: var(--ruler-texture);
+  background-blend-mode: multiply;
+  background-size: 100% 620px;
+  background-repeat: repeat-y;
+  border-right: 1px solid oklch(0.32 0.02 250 / 70%);
+  box-shadow:
+    inset -8px 0 18px -14px oklch(0.15 0.03 256 / 90%),
+    inset 8px 0 16px -12px oklch(1 0 0 / 45%),
+    12px 0 34px -28px oklch(0.1 0.04 256 / 85%);
+}
+
+.ruler-rail::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    oklch(1 0 0 / 18%) 0%,
+    oklch(1 0 0 / 5%) 30%,
+    oklch(0.15 0.03 256 / 26%) 100%
+  );
+}

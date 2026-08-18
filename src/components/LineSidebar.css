@@ -1,0 +1,161 @@
+/* LineSidebar — regla física (metal cepillado con marcas grabadas) */
+
+.line-sidebar {
+  --accent-color: #d7263d;
+  --text-color: #c4c4c4;
+  --marker-color: #6c6c6c;
+  --marker-length: 60px;
+  --marker-gap: 0px;
+  --tick-scale: 0.5;
+  --max-shift: 30px;
+  --item-gap: 20px;
+  --font-size: 1.1rem;
+  --smoothing: 100ms;
+
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.line-sidebar--markers {
+  padding-left: calc(var(--marker-length) + var(--marker-gap));
+}
+
+.line-sidebar__list {
+  list-style: none;
+  margin: 0;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--item-gap);
+}
+
+.line-sidebar__item {
+  position: relative;
+  cursor: pointer;
+}
+
+.line-sidebar__item::before {
+  content: "";
+  position: absolute;
+  inset: -6px -48px;
+}
+
+.line-sidebar__label {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  font-size: var(--font-size);
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--accent-color) calc(var(--effect, 0) * 100%), var(--text-color));
+  transform: translateX(calc(var(--effect, 0) * var(--max-shift)));
+  text-shadow:
+    0 1px 0 rgb(255 255 255 / 18%),
+    0 -1px 1px rgb(0 0 0 / 45%);
+}
+
+.line-sidebar__index {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  margin-right: 0.6rem;
+  font-size: 0.85em;
+  opacity: calc(0.55 + var(--effect, 0) * 0.45);
+}
+
+.line-sidebar__marker {
+  position: absolute;
+  top: 50%;
+  left: calc(-1 * var(--marker-length) - var(--marker-gap));
+  height: 1px;
+  width: var(--marker-length);
+  background-color: color-mix(
+    in srgb,
+    var(--accent-color) calc(var(--effect, 0) * 100%),
+    var(--marker-color)
+  );
+  transform-origin: left center;
+  transform: translateY(-50%) scaleX(calc(0.7 + var(--effect, 0) * 0.5));
+  box-shadow: 0 1px 0 rgb(255 255 255 / 25%);
+}
+
+.line-sidebar--markers .line-sidebar__item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: calc(100% + var(--item-gap) / 2);
+  left: calc(-1 * var(--marker-length) - var(--marker-gap));
+  height: 1px;
+  width: calc(var(--marker-length) * var(--tick-scale));
+  background-color: var(--marker-color);
+  opacity: 0.5;
+  transform: translateY(-50%);
+}
+
+.line-sidebar--scale-tick .line-sidebar__item:not(:last-child)::after {
+  transform-origin: left center;
+  transform: translateY(-50%) scaleX(calc(0.7 + var(--effect, 0) * 0.6));
+}
+
+/* ---------- Carcasa: regla de metal cepillado ---------- */
+
+.ruler-rail {
+  isolation: isolate;
+  background-color: oklch(0.46 0.012 250);
+  background-image: var(--ruler-texture);
+  background-blend-mode: multiply;
+  background-size: 100% 620px;
+  background-repeat: repeat-y;
+  border-right: 1px solid oklch(0.32 0.02 250 / 70%);
+  box-shadow:
+    inset -14px 0 26px -18px oklch(0.15 0.03 256 / 90%),
+    inset 12px 0 22px -16px oklch(1 0 0 / 55%),
+    18px 0 46px -30px oklch(0.1 0.04 256 / 85%);
+}
+
+/* Brillo de iluminación lateral de estudio */
+.ruler-rail::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    oklch(1 0 0 / 22%) 0%,
+    oklch(1 0 0 / 6%) 22%,
+    oklch(0.2 0.03 256 / 12%) 62%,
+    oklch(0.15 0.03 256 / 30%) 100%
+  );
+}
+
+/* Marcas de centímetros grabadas en relieve sobre el borde derecho */
+.ruler-rail::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 26px;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    oklch(0.25 0.02 256 / 65%) 0 1px,
+    transparent 1px 2px,
+    oklch(1 0 0 / 45%) 2px 3px,
+    transparent 3px 12px
+  );
+  mask-image: repeating-linear-gradient(to bottom, black 0 3px, black 3px 12px);
+}
+
+.ruler-rail__cm {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 26px;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    oklch(0.22 0.02 256 / 75%) 0 1px,
+    oklch(1 0 0 / 50%) 1px 2px,
+    transparent 2px 60px
+  );
+}
